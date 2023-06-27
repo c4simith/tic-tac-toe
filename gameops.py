@@ -1,7 +1,10 @@
 def display_gameboard(board_elements):
-    for row in board_elements:
-        print(f"|\t{row[0]}\t|\t{row[1]}\t|\t{row[2]} \t|")
-        print()
+    print(f'|\t{board_elements["7"]}\t|\t{board_elements["8"]}\t|\t{board_elements["9"]} \t|')
+    print()
+    print(f'|\t{board_elements["4"]}\t|\t{board_elements["5"]}\t|\t{board_elements["6"]} \t|')
+    print()
+    print(f'|\t{board_elements["1"]}\t|\t{board_elements["2"]}\t|\t{board_elements["3"]} \t|')
+    print()
 
 
 def load_gameinstructions():
@@ -12,7 +15,8 @@ def load_gameinstructions():
           "The X or O will be marked to respective postion.\n"
           "Starting player gets X symbol.\n")
     print("Postion marking:")
-    display_gameboard([["7", "8", "9"], ["4", "5", "6"], ["1", "2", "3"]])
+    board_elements = {"1": "1", "2": "2", "3": "3", "4": "4", "5": "5", "6": "6", "7": "7", "8": "8", "9": "9", }
+    display_gameboard(board_elements)
     print("---------------------------------------------------")
 
 
@@ -30,28 +34,33 @@ def init_players():
     return player1, player2
 
 
-def get_playerinput(board_elements, current_player, position_map, valid_positions):
+def get_playerinput(board_elements, current_player, valid_positions):
     while True:
-        player_entry = input(f"Next move is for {current_player}. Enter position : ")
-        if player_entry in valid_positions:
-            x, y = position_map.get(player_entry)
-            if board_elements[x][y] != " ":
+        position = input(f"Next move is for {current_player}. Enter position : ")
+        if position in valid_positions:
+            if board_elements[position] != " ":
                 print("Invalid position. Postion already marked")
             else:
-                return player_entry
+                return position
         else:
             print("Invalid position. Expected 1-9")
 
 
 def is_winningmove(board_elements, marking_symbol):
-    for i in [0, 1, 2]:
-        if board_elements[i][0] == board_elements[i][1] == board_elements[i][2] == marking_symbol:
-            return True
-    for j in [0, 1, 2]:
-        if board_elements[0][j] == board_elements[1][j] == board_elements[2][j] == marking_symbol:
-            return True
-    if board_elements[0][0] == board_elements[1][1] == board_elements[2][2] == marking_symbol:
+    if board_elements["7"] == board_elements["8"] == board_elements["9"] == marking_symbol:
         return True
-    if board_elements[2][0] == board_elements[1][1] == board_elements[0][2] == marking_symbol:
+    if board_elements["4"] == board_elements["5"] == board_elements["6"] == marking_symbol:
+        return True
+    if board_elements["1"] == board_elements["2"] == board_elements["3"] == marking_symbol:
+        return True
+    if board_elements["7"] == board_elements["4"] == board_elements["1"] == marking_symbol:
+        return True
+    if board_elements["8"] == board_elements["5"] == board_elements["2"] == marking_symbol:
+        return True
+    if board_elements["9"] == board_elements["6"] == board_elements["3"] == marking_symbol:
+        return True
+    if board_elements["1"] == board_elements["5"] == board_elements["9"] == marking_symbol:
+        return True
+    if board_elements["7"] == board_elements["5"] == board_elements["3"] == marking_symbol:
         return True
     return False
